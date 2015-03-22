@@ -1,26 +1,57 @@
 
-makeCacheMatrix <- function(x = matrix()) {
-  m<-NULL
-  set<-function(y){
-  x<<-y
-  m<<-NULL
-}
-get<-function() x
-setmatrix<-function(solve) m<<- solve
-getmatrix<-function() m
-list(set=set, get=get,
-   setmatrix=setmatrix,
-   getmatrix=getmatrix)
+makeCacheMatrix <- function(m = matrix()) {
+  ## studnt: Dario H. Romero
+  ## course: programming in R (rprog-012)
+  ## date  : 2015-03-22
+  
+  ## @x: a square invertible matrix
+  ##
+  ## makeCacheMatrix  creates a special "matrix", 
+  ## which is really a list containing a function 
+  ## to:
+  ##
+  ## return: list containing functions for
+  ##         1 - set the matrix (set)
+  ##         2 - get the matrix (get)
+  ##         3 - set the matrix-inverted (setInv)
+  ##         4 - get the matrix-inverted (getInv)
+  ##    
+  
+  ## matrix object initialization
+  inv <- NULL
+  
+  ## setMatrix function
+  set <- function(y){
+    m <<- y
+    inv <<- NULL
+  }
+  
+  ## getMatrix function
+  get <- function() m
+  
+  ## setMatrix inverted function
+  setInv = function(solve) inv <<- solve
+  
+  ## getMatrix inverted function
+  getInv = function() inv
+  
+  ## returning list of functions
+  list(set = set, get = get, setInv = setInv, getInv = getInv)
 }
 
-cacheSolve <- function(x=matrix(), ...) {
-    m<-x$getmatrix()
-    if(!is.null(m)){
-      message("getting cached data")
-      return(m)
-    }
-    datos<-x$get()
-    m<-solve(datos, ...)
-    x$setmatrix(m)
-    m
+cacheSolve <- function(x, ...) {
+  ## studnt: Dario H. Romero
+  ## course: programming in R (rprog-012)
+  ## date  : 2015-03-22
+  
+  m <- x$getInv()
+  
+  if(!is.null(m)) {
+    message("... getting cached data!!!")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setInv(m)
+  m  
 }
